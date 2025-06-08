@@ -1,6 +1,7 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +27,11 @@ public class Enthusiasm : MonoBehaviour
     [SerializeField] private float defaultComboTime = 5;
     private float comboTime;
     [SerializeField] private float defaultEnthusiasmWaitTime = 10;
+    [SerializeField] private Animator textAnimator;
     private float enthusiasmWaitTime;
+
+    [SerializeField] private GameObject comboTextPrefab;
+    [SerializeField] private Canvas uiCanvas; 
 
     private bool isComboTime = false;
     private bool startEnthusiasm = false;
@@ -45,6 +50,7 @@ public class Enthusiasm : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        enthusiasmTMP.text = $"{EnthusiasmMoney}yen";
         maxEnthusiasm = notEnthusiast.Count * addEnthusiastNum;
         enthusiasmSlider.value = nowEnthusiasm / maxEnthusiasm;
         comboTime = defaultComboTime;
@@ -90,16 +96,17 @@ public class Enthusiasm : MonoBehaviour
         
     }
     /// <summary>
-    /// �M���x���オ��
+    /// 熱狂度が上がる
     /// </summary>
     public void UpEnthsiasm()
     {
         if (!startEnthusiasm) startEnthusiasm = true;
-
+        if (isFinish) return;
+        textAnimator.SetTrigger("HitWall");
         isComboTime = true;
         comboTime = defaultComboTime;
         enthusiasmWaitTime = defaultEnthusiasmWaitTime;
-
+        ShowComboText();
         nowEnthusiasm += defaultAddEnthusiasm;
         if (nowEnthusiasm > maxEnthusiasm) nowEnthusiasm = maxEnthusiasm;
         enthusiasmSlider.value = nowEnthusiasm / maxEnthusiasm;
@@ -119,5 +126,30 @@ public class Enthusiasm : MonoBehaviour
         EnthusiasmMoney += (defaultAddMoney + defaultAddMoney * defaultComboMoney * comboNum);
         enthusiasmTMP.text = $"{EnthusiasmMoney}yen";
         comboNum++;
+    }
+    /// <summary>
+    /// コンボテキストを表示
+    /// </summary>
+    private void ShowComboText()
+    {
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+
+        // 少しランダムにずらす（例：X方向±30、Y方向+30〜+60）
+        float offsetX = Random.Range(-30f, 30f);
+        float offsetY = Random.Range(30f, 60f);
+        screenPos += new Vector3(offsetX, offsetY, 0);
+
+        // コンボテキスト生成
+        GameObject comboObj = Instantiate(comboTextPrefab, uiCanvas.transform);
+        comboObj.GetComponent<RectTransform>().position = screenPos;
+
+        // テキストをセット
+        TextMeshProUGUI text = comboObj.GetComponentInChildren<TextMeshProUGUI>();
+        if (text != null)
+        {
+            text.text = $"{comboNum + 1} Combo!!";
+        }
+
+        Destroy(comboObj, 1f);
     }
 }

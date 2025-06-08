@@ -7,7 +7,7 @@ public class InstantiateGrandMom : MoveLimited
 
     [SerializeField] private GameObject grandMomPrefab;
     [SerializeField] private float yPosition = 1;
-    private int maxGrandMomNum = 4;
+    private int maxGrandMomNum = 10;
     private int nowGrandMomNum = 1;
 
     private int maxMovePositionDecideTime = 50;
@@ -22,7 +22,7 @@ public class InstantiateGrandMom : MoveLimited
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+       
     }
 
     // Update is called once per frame
@@ -54,5 +54,7 @@ public class InstantiateGrandMom : MoveLimited
         Collider[] hit = Physics.OverlapSphere(_pos, checkRadius);
         return hit.Length == 0;
     }
+
+
 }
 

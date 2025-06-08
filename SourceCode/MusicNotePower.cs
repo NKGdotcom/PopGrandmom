@@ -4,6 +4,8 @@ public class MusicNotePower : MonoBehaviour
 {
     [SerializeField] private float noteSpeed = 30f;
     [SerializeField] private float destroyTime = 2f;
+
+
     private Vector3 shotDirection;
     private Rigidbody noteRb;
 
@@ -36,11 +38,13 @@ public class MusicNotePower : MonoBehaviour
         if (_col.gameObject.CompareTag("Wall"))
         {
             Enthusiasm.Instance.UpEnthsiasm();
+            SoundManager.Instance.PlaySE(SESource.hitWall);
             Destroy(this.gameObject);
         }
         if (_col.gameObject.CompareTag("GrandMom"))
         {
             GameResult.Instance.Result().Forget();
+            _col.gameObject.GetComponent<ObstaclePlayer>().PlayAnimation();
         }
     }
 }

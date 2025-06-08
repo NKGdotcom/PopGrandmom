@@ -9,8 +9,9 @@ public enum BGMSource
 [Serializable]
 public enum SESource
 {
-    light,
-    gameClear,
-    gameOver,
-    celarMiddle
+    hitGrandmom,
+    hitWall,
+    result,
+    firingNote,
+    move
 }

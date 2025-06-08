@@ -8,6 +8,7 @@ public class ObstaclePlayer : MoveLimited
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
     [SerializeField] private float fitDistance = 0.02f;
+    [SerializeField] private Animator grandMomAnimator;
     private Vector3 moveX = new Vector3(1f, 0f, 0f);
     private Vector3 moveZ = new Vector3(0f, 0f, 1f);
     private Vector3 moveDir;
@@ -23,6 +24,7 @@ public class ObstaclePlayer : MoveLimited
 
         enemyRb = GetComponent<Rigidbody>();
         enemyRb.isKinematic = true;
+        grandMomAnimator.enabled = false;
     }
 
     // Update is called once per frame
@@ -78,5 +80,10 @@ public class ObstaclePlayer : MoveLimited
             Quaternion targetRotation = Quaternion.LookRotation(moveDir.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
         }
+    }
+    public void PlayAnimation()
+    {
+        grandMomAnimator.enabled = true;
+        SoundManager.Instance.PlaySE(SESource.hitGrandmom);
     }
 }

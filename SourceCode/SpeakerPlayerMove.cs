@@ -15,7 +15,7 @@ public class SpeakerPlayerMove : MoveLimited
     private Vector3 rotPoint = Vector3.zero;
     private Vector3 rotAxis = Vector3.zero;
 
-    [SerializeField] private int grandMomInstantiateNum = 12;
+    [SerializeField] private int grandMomInstantiateNum = 30;
     private int moveNum;
     private float rotAngle;
     private float rightAngle = 90f;
@@ -104,6 +104,7 @@ public class SpeakerPlayerMove : MoveLimited
         }
         isRotate = false;
         SpeakerState.Instance.IsRotating(isRotate);
+        SoundManager.Instance.PlaySE(SESource.move);
         rotPoint = Vector3.zero;
         rotAxis = Vector3.zero;
         if (moveNum % moveFiringNum == 0)
@@ -121,7 +122,7 @@ public class SpeakerPlayerMove : MoveLimited
     /// </summary>
     private void FiringMusicNote()
     {
-        
+        SoundManager.Instance.PlaySE(SESource.firingNote);
         GameObject _musicNote = musicNote;
         if (musicInstantFrontPos !=null && musicInstantLeftPos != null || musicInstantRightPos != null)
         {
